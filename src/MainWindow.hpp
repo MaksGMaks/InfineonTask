@@ -1,17 +1,23 @@
 #pragma once
 
-#include <iostream>
-#include <QMainWindow>
-#include <QListWidget>
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <QDir>
+#include <QFile>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QListWidget>
+#include <QMainWindow>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <iostream>
 
+#include "Constants.hpp"
 #include "Threads/Thread1.hpp"
 #include "Threads/Thread2.hpp"
 #include "Threads/Thread3.hpp"
 
+/**
+ * Main window with Ui to observe threads' work
+ */
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -20,13 +26,18 @@ public:
     ~MainWindow() = default;
 
 private slots:
-    void onThreadButtonClicked1();
-    void onThreadButtonClicked3();
+    void onThreadButtonClicked1();              // start and stop thread 1
+    void onThreadButtonClicked3();              // start and stop thread 3
+
+    void onItemAddedToList1();                  // prevent stack overflow by deleting old data from list 1; scroll down
+    void onItemAddedToList3();                  // prevent stack overflow by deleting old data from list 3; scroll down
 
 private:
     // Methods
-    void setupUi();
-    void setupConnections();
+    void setupConnections();                    // connect all elements together
+    void setupConstantsFile();                  // read data from settings file; set to default if file corrupted; create file with default data if does't exists
+    void setupUi();                             // create all Ui elements, set its size, position, text 
+
 
     // Threads
     Thread1 *m_thread1;
@@ -35,7 +46,7 @@ private:
 
     // Ui elements
     // Central Widget
-    QWidget *m_centralWidget;
+    QWidget *m_centralWidget;                   // central widget for main window
 
     // Lists
     QListWidget *m_threadNumberList1;
@@ -52,9 +63,14 @@ private:
     QLabel *m_threadLabel3;
 
     // Layouts
-    QVBoxLayout *m_threadLayout1;
-    QVBoxLayout *m_threadLayout2;
-    QVBoxLayout *m_threadLayout3;
+    QVBoxLayout *m_threadLayout1;               // layout for thread 1 elements to make it structurized
+    QVBoxLayout *m_threadLayout2;               // layout for thread 2 elements to make it structurized
+    QVBoxLayout *m_threadLayout3;               // layout for thread 3 elements to make it structurized
 
-    QHBoxLayout *m_mainLayout;
+    QHBoxLayout *m_mainLayout;                  // layout for central widget with all elements
+
+    // Constants
+    QFile *m_constants;
+    int maxListSize1;                           // maximum size of items in list1 to prevent oveflow
+    int maxListSize3;                           // maximum size of items in list3 to prevent oveflow
 };

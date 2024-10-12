@@ -4,8 +4,6 @@ Thread2::Thread2(std::shared_ptr<std::queue<int>> queue, QListWidget *list, QObj
 : AThread(queue, list, parent) {}
 
 void Thread2::onQUpdate() {
-    std::cout << "[Thread2::onQUpdate]" << std::endl;
-
     doResume();
 }
 
@@ -14,13 +12,12 @@ void Thread2::process() {
     std::queue<int> temp;
     {
         std::lock_guard lock(m_mutex);
-        std::cout << "[Thread2::process]" << std::endl;
-
         if(m_queue->size() > 20) {
             m_queue->pop();
         }
         temp = *m_queue;
     }
+
     for(; !temp.empty(); temp.pop()) {
         m_list->addItem(QString::number(temp.front()));
     }

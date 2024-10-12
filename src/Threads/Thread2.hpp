@@ -2,6 +2,9 @@
 
 #include "AThread.hpp"
 
+/**
+ * Second thread that control data amount in queue
+ */
 class Thread2 : public AThread {
     Q_OBJECT
 
@@ -10,9 +13,9 @@ public:
     ~Thread2() = default;
 
 public slots:
-    void onQUpdate();
+    void onQUpdate();                   // reveive signals from senders, that change data in queue
 
 private:
-    void process() override;
+    void process() override;            // overrides to update queue
 
 };

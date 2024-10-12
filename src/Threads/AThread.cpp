@@ -18,7 +18,6 @@ void AThread::doStart() {
 void AThread::doStop() {
     {
         std::lock_guard lock(m_mutex);
-        std::cout << "[AThread::doStop]" << std::endl;
         isRunning = false;
     }
     doResume();
@@ -29,14 +28,12 @@ void AThread::doStop() {
 
 void AThread::doPause() {
     std::lock_guard lock(m_mutex);
-    std::cout << "[AThread::doPause]" << std::endl;
     isPaused = true;
 }
 
 void AThread::doResume() {
     {
         std::lock_guard lock(m_mutex);
-        std::cout << "[AThread::doResume]" << std::endl;
         isPaused = false;
     }
     m_pause.notify_all();
@@ -47,7 +44,6 @@ void AThread::doWork() {
     {
         {
             std::unique_lock lock(m_mutex);
-            std::cout << "[AThread::doWork]" << std::endl;
             m_pause.wait(lock, [this](){ return !isPaused || !isRunning; });
         }
 
