@@ -26,8 +26,16 @@ public:
     ~MainWindow() = default;
 
 private slots:
-    void onThreadButtonClicked1();              // start and stop thread 1
-    void onThreadButtonClicked3();              // start and stop thread 3
+    void onStartThreadClicked1();               // start thread 1
+    void onThreadButtonClicked1();              // pause and resume thread 1
+    void onStopThreadClicked1();                // stop thread 1
+
+    void onStartThreadClicked2();               // start thread 1
+    void onStopThreadClicked2();                // stop thread 1
+
+    void onStartThreadClicked3();               // start thread 1
+    void onThreadButtonClicked3();              // pause and resume thread 3
+    void onStopThreadClicked3();                // stop thread 1
 
     void onItemAddedToList1();                  // prevent stack overflow by deleting old data from list 1; scroll down
     void onItemAddedToList3();                  // prevent stack overflow by deleting old data from list 3; scroll down
@@ -37,7 +45,6 @@ private:
     void setupConnections();                    // connect all elements together
     void setupConstantsFile();                  // read data from settings file; set to default if file corrupted; create file with default data if does't exists
     void setupUi();                             // create all Ui elements, set its size, position, text 
-
 
     // Threads
     Thread1 *m_thread1;
@@ -54,8 +61,16 @@ private:
     QListWidget *m_threadNumberList3;
 
     // Buttons
+    QPushButton *m_startThread1;
     QPushButton *m_controlThread1;
+    QPushButton *m_stopThread1;
+    
+    QPushButton *m_startThread2;
+    QPushButton *m_stopThread2;
+
+    QPushButton *m_startThread3;
     QPushButton *m_controlThread3;
+    QPushButton *m_stopThread3;
 
     // Labels
     QLabel *m_threadLabel1;

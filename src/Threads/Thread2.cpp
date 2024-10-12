@@ -12,7 +12,7 @@ void Thread2::process() {
     std::queue<int> temp;
     {
         std::lock_guard lock(m_mutex);
-        if(m_queue->size() > 20) {
+        while(m_queue->size() > 20) {
             m_queue->pop();
         }
         temp = *m_queue;

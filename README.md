@@ -1,4 +1,4 @@
-## How to build in Linux
+## How to build
 1. Create build directory in project folder and move into it:
 ```
 mkdir build

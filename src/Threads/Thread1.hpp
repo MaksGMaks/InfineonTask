@@ -12,6 +12,9 @@ public:
     explicit Thread1(std::shared_ptr<std::queue<int>> queue, QListWidget *list, QObject *parent = nullptr);
     ~Thread1() = default;
 
+public slots:
+    void clearValue();              // set value to zero
+
 signals:
     void pushToQ();                 // report receiver that value was pushed into queue (receiver is thread 2)
 

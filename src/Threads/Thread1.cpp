@@ -3,6 +3,10 @@
 Thread1::Thread1(std::shared_ptr<std::queue<int>> queue, QListWidget *list, QObject *parent)
 : AThread(queue, std::move(list), parent) {}
 
+void Thread1::clearValue() {
+    value = 0;
+}
+
 void Thread1::process() {
     value++;
     {
