@@ -7,9 +7,10 @@
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     
+    // separated from threads queue
     std::shared_ptr<std::queue<int>> queue = std::make_shared<std::queue<int>>();
-    std::cout << "[main] : queue size = " << queue->size() << std::endl;
 
+    // main window
     MainWindow *mainWindow = new MainWindow(queue);
     mainWindow->show();
 

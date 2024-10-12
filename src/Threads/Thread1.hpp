@@ -2,6 +2,9 @@
 
 #include "AThread.hpp"
 
+/**
+ * First thread, that push values into queue
+ */
 class Thread1 : public AThread {
     Q_OBJECT
 
@@ -10,10 +13,10 @@ public:
     ~Thread1() = default;
 
 signals:
-    void pushToQ();
+    void pushToQ();                 // report receiver that value was pushed into queue (receiver is thread 2)
 
 private:
-    void process() override;
+    void process() override;        // overrides to push value into queue
 
-    int value = 0;
+    int value = 0;                  // start value
 };

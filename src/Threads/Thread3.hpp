@@ -2,6 +2,9 @@
 
 #include "AThread.hpp"
 
+/**
+ * Thrird thread that pop value from queue
+ */
 class Thread3 : public AThread {
     Q_OBJECT
 
@@ -10,9 +13,9 @@ public:
     ~Thread3() = default;
 
 signals:
-    void popFromQ();
+    void popFromQ();                    // report receiver that value was poped from queue (receiver is thread 2)
 
 private:
-    void process() override;
+    void process() override;            // overrides to pop value from queue
 
 };
