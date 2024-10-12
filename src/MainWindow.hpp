@@ -8,11 +8,15 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
+#include "Threads/Thread1.hpp"
+#include "Threads/Thread2.hpp"
+#include "Threads/Thread3.hpp"
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(std::shared_ptr<std::queue<int>> queue, QWidget *parent = nullptr);
     ~MainWindow() = default;
 
 private slots:
@@ -23,6 +27,11 @@ private:
     // Methods
     void setupUi();
     void setupConnections();
+
+    // Threads
+    Thread1 *m_thread1;
+    Thread2 *m_thread2;
+    Thread3 *m_thread3;
 
     // Ui elements
     // Central Widget

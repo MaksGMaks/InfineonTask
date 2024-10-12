@@ -43,6 +43,11 @@ endif()
 set(ALL_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Threads/AThread.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Threads/Thread1.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Threads/Thread2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Threads/Thread3.cpp
+
 )
 
 # Create executable
