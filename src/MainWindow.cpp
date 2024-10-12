@@ -1,14 +1,31 @@
 #include "MainWindow.hpp"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(std::shared_ptr<std::queue<int>> queue, QWidget *parent)
 : QMainWindow(parent) {
     setupUi();
+
+    m_thread1 = new Thread1(queue, m_threadNumberList1);
+    m_thread2 = new Thread2(queue, m_threadNumberList2);
+    m_thread3 = new Thread3(queue, m_threadNumberList3);
+
     setupConnections();
+
+    m_thread1->doStart();
+    m_thread1->doPause();
+
+    m_thread2->doStart();
+    m_thread2->doPause();
+
+    m_thread3->doStart();
+    m_thread3->doPause();
 }
 
 void MainWindow::setupConnections() {
     connect(m_controlThread1, &QPushButton::clicked, this, &MainWindow::onThreadButtonClicked1);
     connect(m_controlThread3, &QPushButton::clicked, this, &MainWindow::onThreadButtonClicked3);
+
+    connect(m_thread1, &Thread1::pushToQ, m_thread2, &Thread2::onQUpdate);
+    connect(m_thread3, &Thread3::popFromQ, m_thread2, &Thread2::onQUpdate);
 }
 
 void MainWindow::onThreadButtonClicked1() {
@@ -16,8 +33,10 @@ void MainWindow::onThreadButtonClicked1() {
     m_controlThread1->setFlat(!m_controlThread1->isFlat());
     if(m_controlThread1->isFlat()) {
         m_controlThread1->setText("Stop");
+        m_thread1->doResume();
     } else {
         m_controlThread1->setText("Start");
+        m_thread1->doPause();
     }
 }
 
@@ -26,8 +45,10 @@ void MainWindow::onThreadButtonClicked3() {
     m_controlThread3->setFlat(!m_controlThread3->isFlat());
     if(m_controlThread3->isFlat()) {
         m_controlThread3->setText("Stop");
+        m_thread3->doResume();
     } else {
         m_controlThread3->setText("Start");
+        m_thread3->doPause();
     }
 }
 
