@@ -5,6 +5,11 @@ project(InfineonTask)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# CMake settings for Qt
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
 # Locate Qt packages
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui)
 
@@ -14,29 +19,30 @@ else()
     message(STATUS "Qt not found. Initialize download")
     include(ExternalProject)
 
-  # Set the Qt version you want to install
-  set(QT_VERSION "6.6.3")
+    # Set the Qt version you want to install
+    set(QT_VERSION "6.6.3")
 
-  # Define the Qt project
-  ExternalProject_Add(
-      QtProject
-      PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/qt
-      GIT_REPOSITORY https://code.qt.io/qt/qt5.git
-      GIT_TAG v${QT_VERSION}
-      CONFIGURE_COMMAND ./configure -prefix <INSTALL_DIR> -opensource -confirm-license -nomake tests -nomake examples
-      BUILD_COMMAND make
-      INSTALL_COMMAND make install
-      BUILD_IN_SOURCE 1
-  )
+    # Define the Qt project
+    ExternalProject_Add(
+        QtProject
+        PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/qt
+        GIT_REPOSITORY https://code.qt.io/qt/qt5.git
+        GIT_TAG v${QT_VERSION}
+        CONFIGURE_COMMAND ./configure -prefix <INSTALL_DIR> -opensource -confirm-license -nomake tests -nomake examples
+        BUILD_COMMAND make
+        INSTALL_COMMAND make install
+        BUILD_IN_SOURCE 1
+    )
 
-  # Set the path to the Qt installation
-  ExternalProject_Get_Property(QtProject install_dir)
-  set(QT_ROOT ${install_dir})
+    # Set the path to the Qt installation
+    ExternalProject_Get_Property(QtProject install_dir)
+    set(QT_ROOT ${install_dir})
 endif()
 
 
 set(ALL_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
 )
 
 # Create executable

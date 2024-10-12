@@ -1,0 +1,9 @@
+# build files
+/build*
+
+# IDE values
+.vscode*
+*.json
+
+# qt in project
+/qt*
