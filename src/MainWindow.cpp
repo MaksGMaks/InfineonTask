@@ -33,8 +33,13 @@ void MainWindow::setupConnections() {
 
 void MainWindow::onStartThreadClicked1() {
     m_thread1->doStart();
+
     m_startThread1->setEnabled(false);
+
     m_controlThread1->setEnabled(true);
+    m_controlThread1->setText("Pause");
+    m_controlThread1->setFlat(true);
+
     m_stopThread1->setEnabled(true);
 }
 
@@ -52,6 +57,7 @@ void MainWindow::onThreadButtonClicked1() {
 void MainWindow::onStopThreadClicked1() {
     m_thread1->doStop();
     m_thread1->clearValue();
+    
     m_startThread1->setEnabled(true);
     m_controlThread1->setEnabled(false);
     m_stopThread1->setEnabled(false);
@@ -72,7 +78,11 @@ void MainWindow::onStopThreadClicked2() {
 void MainWindow::onStartThreadClicked3() {
     m_thread3->doStart();
     m_startThread3->setEnabled(false);
+
     m_controlThread3->setEnabled(true);
+    m_controlThread3->setText("Pause");
+    m_controlThread3->setFlat(true);
+
     m_stopThread3->setEnabled(true);
 }
 
@@ -151,24 +161,34 @@ void MainWindow::setupUi() {
 
     m_startThread1 = new QPushButton("Start");
     m_startThread1->setFixedHeight(constants::buttonsSize::HEIGHT);
+
     m_controlThread1 = new QPushButton("Pause");
     m_controlThread1->setFixedHeight(constants::buttonsSize::HEIGHT);
     m_controlThread1->setFlat(true);
+    m_controlThread1->setEnabled(false);
+
     m_stopThread1 = new QPushButton("Stop");
     m_stopThread1->setFixedHeight(constants::buttonsSize::HEIGHT);
+    m_stopThread1->setEnabled(false);
 
     m_startThread2 = new QPushButton("Start");
     m_startThread2->setFixedHeight(constants::buttonsSize::HEIGHT);
+
     m_stopThread2 = new QPushButton("Stop");
     m_stopThread2->setFixedHeight(constants::buttonsSize::HEIGHT);
+    m_stopThread2->setEnabled(false);
 
     m_startThread3 = new QPushButton("Start");
     m_startThread3->setFixedHeight(constants::buttonsSize::HEIGHT);
+
     m_controlThread3 = new QPushButton("Pause");
     m_controlThread3->setFixedHeight(constants::buttonsSize::HEIGHT);
     m_controlThread3->setFlat(true);
+    m_controlThread3->setEnabled(false);
+
     m_stopThread3 = new QPushButton("Stop");
     m_stopThread3->setFixedHeight(constants::buttonsSize::HEIGHT);
+    m_stopThread3->setEnabled(false);
 
     m_threadLabel1 = new QLabel("Thread 1");
     m_threadLabel2 = new QLabel("Thread 2");
