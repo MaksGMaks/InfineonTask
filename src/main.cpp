@@ -8,10 +8,10 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     
     // separated from threads queue
-    std::shared_ptr<std::queue<int>> queue = std::make_shared<std::queue<int>>();
+    std::unique_ptr<std::queue<int>> queue = std::make_unique<std::queue<int>>();
 
     // main window
-    MainWindow *mainWindow = new MainWindow(queue);
+    MainWindow *mainWindow = new MainWindow(std::move(queue));
     mainWindow->show();
 
     return app.exec();

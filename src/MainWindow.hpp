@@ -1,19 +1,21 @@
 #pragma once
 
-#include <QDir>
-#include <QFile>
+#include <atomic>
+#include <chrono>
+#include <condition_variable>
+#include <iostream>
+#include <mutex>
+#include <thread>
+#include <queue>
+
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <iostream>
 
 #include "Constants.hpp"
-#include "Threads/Thread1.hpp"
-#include "Threads/Thread2.hpp"
-#include "Threads/Thread3.hpp"
 
 /**
  * Main window with Ui to observe threads' work
@@ -22,70 +24,72 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(std::shared_ptr<std::queue<int>> queue, QWidget *parent = nullptr);
-    ~MainWindow() = default;
+    MainWindow(std::unique_ptr<std::queue<int>> queue, QWidget *parent = nullptr);
+    ~MainWindow();
 
 private slots:
-    void onStartThreadClicked1();               // start thread 1
-    void onThreadButtonClicked1();              // pause and resume thread 1
-    void onStopThreadClicked1();                // stop thread 1
+    void onStartPushThreadClicked();               // start push thread
+    void onStopPushThreadClicked();                // stop push thread
 
-    void onStartThreadClicked2();               // start thread 1
-    void onStopThreadClicked2();                // stop thread 1
-
-    void onStartThreadClicked3();               // start thread 1
-    void onThreadButtonClicked3();              // pause and resume thread 3
-    void onStopThreadClicked3();                // stop thread 1
-
-    void onItemAddedToList1();                  // prevent stack overflow by deleting old data from list 1; scroll down
-    void onItemAddedToList3();                  // prevent stack overflow by deleting old data from list 3; scroll down
+    void onStartPopThreadClicked();               // start pop thread
+    void onStopPopThreadClicked();                // stop pop thread
 
 private:
     // Methods
     void setupConnections();                    // connect all elements together
-    void setupConstantsFile();                  // read data from settings file; set to default if file corrupted; create file with default data if does't exists
     void setupUi();                             // create all Ui elements, set its size, position, text 
 
+    // Thread's methods
+    void pushValuesToQueue();                             // push value into queue
+    void updateValuesInQueue();                             // update queue
+    void popValuesFromQueue();                            // pop value from queue
+
+    // Thread's variables
+    // Condition variables
+    std::condition_variable m_updateThreadState;
+
+    // Atomic
+    std::atomic<bool> isPushThreadRunning;
+    std::atomic<bool> isUpdateThreadRunning;
+    std::atomic<bool> isUpdateThreadPaused;
+    std::atomic<bool> isPopThreadRunning;
+
+    // Mutex
+    std::mutex m_mutex;
+
     // Threads
-    Thread1 *m_thread1;
-    Thread2 *m_thread2;
-    Thread3 *m_thread3;
+    std::thread m_pushThread;
+    std::thread m_updateThread;
+    std::thread m_popThread;
+
+    // Storage queue
+    std::unique_ptr<std::queue<int>> m_queue;   // queue for threads
 
     // Ui elements
     // Central Widget
     QWidget *m_centralWidget;                   // central widget for main window
 
     // Lists
-    QListWidget *m_threadNumberList1;
-    QListWidget *m_threadNumberList2;
-    QListWidget *m_threadNumberList3;
+    QListWidget *m_pushThreadNumberList;
+    QListWidget *m_updateThreadNumberList;
+    QListWidget *m_popThreadNumberList;
 
     // Buttons
-    QPushButton *m_startThread1;
-    QPushButton *m_controlThread1;
-    QPushButton *m_stopThread1;
-    
-    QPushButton *m_startThread2;
-    QPushButton *m_stopThread2;
+    QPushButton *m_startPushThread;
+    QPushButton *m_stopPushThread;
 
-    QPushButton *m_startThread3;
-    QPushButton *m_controlThread3;
-    QPushButton *m_stopThread3;
+    QPushButton *m_startPopThread;
+    QPushButton *m_stopPopThread;
 
     // Labels
-    QLabel *m_threadLabel1;
-    QLabel *m_threadLabel2;
-    QLabel *m_threadLabel3;
+    QLabel *m_pushThreadLabel;
+    QLabel *m_updateThreadLabel;
+    QLabel *m_popThreadLabel;
 
     // Layouts
-    QVBoxLayout *m_threadLayout1;               // layout for thread 1 elements to make it structurized
-    QVBoxLayout *m_threadLayout2;               // layout for thread 2 elements to make it structurized
-    QVBoxLayout *m_threadLayout3;               // layout for thread 3 elements to make it structurized
+    QVBoxLayout *m_pushThreadLayout;               // layout for thread 1 elements to make it structurized
+    QVBoxLayout *m_updateThreadLayout;               // layout for thread 2 elements to make it structurized
+    QVBoxLayout *m_popThreadLayout;               // layout for thread 3 elements to make it structurized
 
     QHBoxLayout *m_mainLayout;                  // layout for central widget with all elements
-
-    // Constants
-    QFile *m_constants;
-    int maxListSize1;                           // maximum size of items in list1 to prevent oveflow
-    int maxListSize3;                           // maximum size of items in list3 to prevent oveflow
 };
