@@ -5,7 +5,8 @@
  */
 namespace constants {
     constexpr int DEFAULT_LIST_SIZE = 200;      // default size of list to prevent stack overflow
-    
+    constexpr int DEFAULT_SLEEP_TIME = 200;      // default time for thread sleep in ms
+
     namespace mainWindowSize {
         constexpr int WIDTH = 800;              
         constexpr int HEIGHT = 600;
