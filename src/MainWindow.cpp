@@ -12,7 +12,7 @@ MainWindow::MainWindow(std::unique_ptr<std::queue<int>> queue, QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
-    onStartPushThreadClicked();
+    onStopPushThreadClicked();
     onStopPopThreadClicked();
     {
         std::lock_guard lock(m_mutex);
